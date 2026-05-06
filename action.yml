@@ -82,8 +82,23 @@ runs:
             ${{ inputs.yaml-file }} \
             --release-summary "$summary" \
             --release-url "${{ inputs.release-url }}" \
-            --outputs-file "$GITHUB_OUTPUT" \
+            --outputs-file "/github/workspace/outputcmd.txt" \
             ${{ inputs.complete-manifest == 'true' && '--complete-manifest' || '--partial-manifest' }}
+        
+        echo "Github Output before append"
+        cat $GITHUB_OUTPUT
+
+        echo "Output from ESPHome build"
+        cat outputcmd.txt
+
+        echo "Github Output: $GITHUB_OUTPUT"
+        cat outputcmd.txt >> $GITHUB_OUTPUT
+
+        echo "Github Output after append"
+        cat $GITHUB_OUTPUT
+
+        echo "Folder contents after append"
+        ls - $(dirname $GITHUB_OUTPUT)
 
 branding:
   icon: "archive"
